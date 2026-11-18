@@ -128,3 +128,28 @@
     @apply font-sans;
   }
 }
+
+/* Tema Kas Kita: biru & putih */
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+  --accent: #eff6ff;
+  --accent-foreground: #2563eb;
+}
+
+@theme {
+  --color-brand-deep: #1e40af;
+  --color-brand-soft: #dbeafe;
+  --color-brand-light: #eff6ff;
+  --color-income: #16a34a;
+  --color-expense: #dc2626;
+  --color-pending: #f59e0b;
+}
