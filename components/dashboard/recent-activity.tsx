@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate, formatRupiah } from "@/lib/format";
-import type { Transaction } from "@/lib/dummy-data";
+import type { Transaction } from "@/lib/data/dashboard";
 
 export function RecentActivity({ items }: { items: Transaction[] }) {
   return (

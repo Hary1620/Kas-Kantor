@@ -8,6 +8,7 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { LogoutButton } from "./logout-button";
 
 const items = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -54,6 +55,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         </div>
         <NavLinks />
       </aside>
+      <div className="mt-6 border-t pt-4">
+  <LogoutButton />
+</div>
       <div className="min-w-0 flex-1">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-white px-4 md:hidden">
           
@@ -67,6 +71,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     </SheetTitle>
     <NavLinks onNavigate={() => setOpen(false)} />
   </SheetContent>
+  <div className="mt-6 border-t pt-4">
+  <LogoutButton />
+</div>
 </Sheet>
 <Logo />
         </header>

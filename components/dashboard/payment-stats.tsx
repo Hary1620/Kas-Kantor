@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { formatRupiah } from "@/lib/format";
-import type { stats as statsData } from "@/lib/dummy-data";
+import type { PaymentStatsData } from "@/lib/data/dashboard"
 
-export function PaymentStats({ stats }: { stats: typeof statsData }) {
+export function PaymentStats({ stats }: { stats: PaymentStatsData }) {
   const percent = stats.activeMembers === 0 ? 0 : Math.round((stats.paid / stats.activeMembers) * 100);
   return (
     <Card className="bg-brand-light shadow-sm">
