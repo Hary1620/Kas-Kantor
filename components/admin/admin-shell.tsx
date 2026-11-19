@@ -56,7 +56,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </aside>
       <div className="min-w-0 flex-1">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-white px-4 md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
+          
           <Button variant="ghost" size="icon" aria-label="Buka menu" onClick={() => setOpen(true)}>
   <Menu />
 </Button>
