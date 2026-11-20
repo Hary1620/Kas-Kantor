@@ -13,3 +13,7 @@ export function formatDate(iso: string): string {
     year: "numeric",
   }).format(new Date(iso));
 }
+
+export function todayJakarta(): string {
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Jakarta" }).format(new Date());
+}
