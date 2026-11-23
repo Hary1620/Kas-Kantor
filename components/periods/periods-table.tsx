@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Plus, Users, Pencil } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { savePeriod } from "@/app/admin/periode/actions";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +17,19 @@ import { periodStatusClass, periodStatusLabel } from "@/lib/labels";
 import type { Period } from "@/lib/types";
 import { fieldClass } from "@/lib/ui";
 import { periodSchema, type PeriodValues } from "@/lib/validations/period";
+import Link from "next/link";
 
 export type PeriodRow = Period & { target: number; collected: number; count: number };
+
+function formatAmountInput(value: string | number) {
+  const digits = String(value).replace(/\D/g, "");
+  return digits === "" ? "" : new Intl.NumberFormat("id-ID").format(Number(digits));
+}
+
+function parseAmountInput(value: string) {
+  const digits = value.replace(/\D/g, "");
+  return digits === "" ? 0 : Number(digits);
+}
 
 function PeriodForm({ period, onDone }: { period: Period | null; onDone: () => void }) {
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +38,7 @@ function PeriodForm({ period, onDone }: { period: Period | null; onDone: () => v
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm<PeriodValues>({
     resolver: zodResolver(periodSchema),
@@ -92,7 +104,21 @@ useEffect(() => {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="default_amount">Nominal iuran (Rp)</Label>
-          <Input id="default_amount" type="number" inputMode="numeric" min={0} step={1} {...register("default_amount", { valueAsNumber: true })} />
+         <Controller
+  name="default_amount"
+  control={control}
+  render={({ field }) => (
+    <Input
+      id="default_amount"
+      type="text"
+      inputMode="numeric"
+      value={formatAmountInput(field.value ?? 0)}
+      onChange={(e) =>
+        field.onChange(parseAmountInput(e.target.value))
+      }
+    />
+  )}
+/>
           {fieldError(errors.default_amount?.message)}
         </div>
         <div className="space-y-2">
@@ -194,18 +220,30 @@ export function PeriodsTable({ periods }: { periods: PeriodRow[] }) {
                       {periodStatusLabel[p.status]}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setEditing(p);
-                        setOpen(true);
-                      }}
-                    >
-                      Ubah
-                    </Button>
-                  </TableCell>
+                  <TableCell className="whitespace-nowrap text-right">
+  <div className="flex items-center justify-end gap-2">
+  <Link
+  href={`/admin/periode/${p.id}`}
+  className="inline-flex h-9 items-center justify-center rounded-md border border-blue-200 bg-blue-50 px-3 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100"
+>
+  <Users className="mr-1 size-4" />
+  Kelola Anggota
+</Link>
+
+    <Button
+      size="sm"
+      variant="outline"
+      className="border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
+      onClick={() => {
+        setEditing(p);
+        setOpen(true);
+      }}
+    >
+      <Pencil className="mr-1 size-4" />
+      Ubah
+    </Button>
+  </div>
+</TableCell>
                 </TableRow>
               );
             })}

@@ -15,6 +15,7 @@ import { formatDate } from "@/lib/format";
 import type { Member } from "@/lib/types";
 import { fieldClass } from "@/lib/ui";
 import { memberSchema, type MemberValues } from "@/lib/validations/member";
+import Link from "next/link";
 
 function MemberForm({ member, onDone }: { member: Member | null; onDone: () => void }) {
   const [error, setError] = useState<string | null>(null);
@@ -151,7 +152,11 @@ export function MembersTable({ members }: { members: Member[] }) {
             )}
             {members.map((m) => (
               <TableRow key={m.id}>
-                <TableCell className="font-medium">{m.full_name}</TableCell>
+                <TableCell className="font-medium">
+  <Link href={`/admin/anggota/${m.id}`} className="hover:text-primary hover:underline">
+    {m.full_name}
+  </Link>
+</TableCell>
                 <TableCell>{m.phone ?? "-"}</TableCell>
                 <TableCell>{formatDate(m.joined_at)}</TableCell>
                 <TableCell>
