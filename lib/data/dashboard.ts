@@ -24,6 +24,7 @@ export type PaymentMethod = {
   number: string;
   owner: string;
   note: string;
+  qrImageUrl: string | null;
 };
 
 export type DashboardData = {
@@ -50,7 +51,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     supabase.rpc("public_payment_stats"),
     supabase.rpc("public_unpaid_members"),
     supabase.rpc("public_show_unpaid"),
-    supabase.rpc("public_payment_methods"),
+    supabase.rpc("public_payment_methods_v2"),
   ]);
 
   const failed = [summary, recent, chart, stats, unpaid, showUnpaid, methods].find((r) => r.error);
@@ -86,15 +87,24 @@ export async function getDashboardData(): Promise<DashboardData> {
     },
     unpaidNames: (unpaid.data ?? []).map((r: { member_name: string }) => r.member_name),
     showUnpaid: Boolean(showUnpaid.data),
-    methods: (methods.data ?? []).map(
-      (r: { id: string; name: string; provider: string | null; account_number: string | null; account_owner: string | null; note: string | null }) => ({
-        id: r.id,
-        name: r.name,
-        provider: r.provider ?? "",
-        number: r.account_number ?? "",
-        owner: r.account_owner ?? "",
-        note: r.note ?? "",
-      })
-    ),
+   methods: (methods.data ?? []).map(
+  (r: {
+    id: string;
+    name: string;
+    provider: string | null;
+    account_number: string | null;
+    account_owner: string | null;
+    note: string | null;
+    qr_image_url: string | null;
+  }) => ({
+    id: r.id,
+    name: r.name,
+    provider: r.provider ?? "",
+    number: r.account_number ?? "",
+    owner: r.account_owner ?? "",
+    note: r.note ?? "",
+    qrImageUrl: r.qr_image_url,
+  })
+),
   };
 }

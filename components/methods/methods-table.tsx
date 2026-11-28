@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,11 +22,25 @@ export type MethodRow = {
   account_owner: string | null;
   note: string | null;
   is_active: boolean;
+  qr_image_url: string | null;
 };
 
 function MethodForm({ method, onDone }: { method: MethodRow | null; onDone: () => void }) {
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [qrisFile, setQrisFile] = useState<File | null>(null);
+const [previewUrl, setPreviewUrl] = useState<string | null>(
+  method?.qr_image_url ?? null
+);
+
+useEffect(() => {
+  if (!qrisFile) return;
+
+  const url = URL.createObjectURL(qrisFile);
+  setPreviewUrl(url);
+
+  return () => URL.revokeObjectURL(url);
+}, [qrisFile]);
   const {
     register,
     handleSubmit,
@@ -45,7 +59,7 @@ function MethodForm({ method, onDone }: { method: MethodRow | null; onDone: () =
   function onSubmit(values: MethodValues) {
     setError(null);
     startTransition(async () => {
-      const res = await saveMethod(values, method?.id);
+      const res = await saveMethod(values, method?.id, qrisFile);
       if (res.error) setError(res.error);
       else onDone();
     });
@@ -84,6 +98,34 @@ function MethodForm({ method, onDone }: { method: MethodRow | null; onDone: () =
         <textarea id="note" rows={2} className={`${fieldClass} w-full`} {...register("note")} />
         {err(errors.note?.message)}
       </div>
+<div className="space-y-2">
+  <Label htmlFor="qris">Gambar QRIS (Opsional)</Label>
+
+  <Input
+    id="qris"
+    type="file"
+    accept="image/png,image/jpeg,image/webp"
+    onChange={(e) => {
+      const file = e.target.files?.[0] ?? null;
+      setQrisFile(file);
+    }}
+  />
+
+  <p className="text-xs text-muted-foreground">
+    Format PNG, JPG, atau WEBP. Maksimal 5 MB.
+  </p>
+
+  {previewUrl && (
+    <div className="mt-3 rounded-lg border p-3">
+      <p className="mb-2 text-sm font-medium">Preview QRIS</p>
+      <img
+        src={previewUrl}
+        alt="Preview QRIS"
+        className="h-48 w-48 rounded-lg border object-contain"
+      />
+    </div>
+  )}
+</div>
       {error && <p className="rounded-md bg-red-50 p-3 text-sm text-expense">{error}</p>}
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onDone}>

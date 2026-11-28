@@ -25,7 +25,7 @@ export function FinanceChart({ data }: { data: Point[] }) {
         <Tabs defaultValue="compare">
           <TabsList>
             <TabsTrigger value="compare">Pemasukan vs Pengeluaran</TabsTrigger>
-            <TabsTrigger value="balance">Perkembangan Saldo</TabsTrigger>
+            {/* <TabsTrigger value="balance">Perkembangan Saldo</TabsTrigger> */}
           </TabsList>
           <TabsContent value="compare" className="h-72">
             <ResponsiveContainer width="100%" height="100%">
