@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeftRight, CalendarRange, FileText, LayoutDashboard, Menu, Settings, Users, Wallet } from "lucide-react";
+import { ArrowLeftRight, CalendarRange, FileText, LayoutDashboard, Menu, Settings, Users, Wallet, CreditCard } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -16,8 +16,10 @@ const items = [
   { href: "/admin/periode", label: "Periode Iuran", icon: CalendarRange },
   { href: "/admin/pembayaran", label: "Pembayaran", icon: Wallet },
   { href: "/admin/transaksi", label: "Transaksi", icon: ArrowLeftRight },
+  { href: "/admin/metode-pembayaran", label: "Metode Bayar", icon: CreditCard },
   { href: "/admin/laporan", label: "Laporan", icon: FileText },
   { href: "/admin/pengaturan", label: "Pengaturan", icon: Settings },
+ 
 ];
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
